@@ -2,9 +2,9 @@
 console.log(document);
 import Notiflix from 'notiflix';
 import 'notiflix/dist/notiflix-3.2.6.min.css';
-import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { fetchData } from './page-api';
 
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
@@ -20,17 +20,7 @@ btnLoadMore.style.display = 'none';
 
 const fetchImages = async () => {
   try {
-    const response = await axios.get('https://pixabay.com/api/', {
-      params: {
-        key: '38606414-d1218f221fd8daceb76c83e1a',
-        q: searchQuestion,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        page: currentPage,
-        per_page: 40,
-      },
-    });
+    const response = await fetchData(searchQuestion, currentPage);
     console.log('response:', response);
     if (response.data.hits.length === 0) {
       Notiflix.Notify.failure(
